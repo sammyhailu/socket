@@ -12,4 +12,12 @@ const io = socketIO(server);
 
 app.use(express.static(publicPath));
 
-app.listen(3000 ,() => console.log(`server is listening on port: ${port}`))
+io.on('connection', (socket) => {
+    console.log(' user is connected');
+
+    socket.on("disconnect", () => {
+        console.log(" client diconnected")
+    })
+})
+
+server.listen(3000 ,() => console.log(`server is listening on port: ${port}`))
