@@ -15,9 +15,15 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log(' user is connected');
 
-    socket.on("disconnect", () => {
-        console.log(" client diconnected")
+    socket.emit('newMessage', {from: "sammy@google.com", text: "can we meet up at 4", createdAt: 234})
+
+    socket.on("createMessage", function(data){
+        console.log(' message from  the client', data)
     })
+
+})
+socket.on("disconnect", () => {
+   console.log(" client diconnected")
 })
 
 server.listen(3000 ,() => console.log(`server is listening on port: ${port}`))
