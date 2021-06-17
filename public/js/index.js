@@ -1,21 +1,27 @@
 var socket = io();
 
 socket.on('connect', () => {
-    console.log("client is connected")
+
+    socket.on('newUser', function(data) {
+    	console.log("new user joined", data)
+    })
+    
 })
 
-socket.on('join', function(message) {
-    console.log(" Admin: ", message)
-})
-
-socket.on('userJoined', function(message) {
-    console.log("Joined: ", message)
-})
 
 socket.on('disconnect', () => {
     console.log('disconnected')
 })
 
-socket.on('newMessage', function(data) {
-    console.log(" new message: ", data)
+jQuery('#message-form').on('submit', function(evt){
+	evt.preventDefault();
+	console.log(" form submitted")
+	socket.emit('createMessage', {user: 'User', text: jQuery('[name=message]').val()})
+})
+
+socket.on('newMessage', function(data){
+	var li = jQuery('<li></li>');
+	li.text(`from ${data.from} text: ${data.text}`)
+
+	jQuery('#messages').append(li)
 })
